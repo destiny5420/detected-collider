@@ -1,0 +1,11 @@
+Library/
+Temp/
+obj/
+*.csproj
+*.sln
+.vs/
+*.apk
+*.userpref
+*.unityproj
+*.cache
+*.vscode
