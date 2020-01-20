@@ -39,7 +39,7 @@ public class DrawManager : MonoBehaviour
         if (
         r_r1.boundData.maxX > r_r2.boundData.minX && 
         r_r2.boundData.maxX > r_r1.boundData.minX && 
-        r_r1.boundData.maxY > r_r1.boundData.minY && 
+        r_r1.boundData.maxY > r_r2.boundData.minY && 
         r_r2.boundData.maxY > r_r1.boundData.minY 
         )
         {
