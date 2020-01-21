@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class DrawManager : MonoBehaviour
@@ -13,6 +12,8 @@ public class DrawManager : MonoBehaviour
     void Awake()
     {
         m_lisData = new List<DetectCollider>();
+
+        TextVec();
     }
 
     public static void Regist(DetectCollider r_obj)
@@ -27,15 +28,6 @@ public class DrawManager : MonoBehaviour
 
     bool ComparerCollider(DetectCollider r_r1, DetectCollider r_r2)
     {
-        // string sMsg1 = r_r1.boundData.maxX > r_r2.boundData.minX ? r_r1.name + " maxX > " + r_r2.name + " minX: true" : r_r1.name + " maxX > " + r_r2.name + " minX: false";
-        // string sMsg2 = r_r2.boundData.maxX > r_r1.boundData.minX ? r_r2.name + " maxX > " + r_r1.name + " minX: true" : r_r2.name + " maxX > " + r_r1.name + " minX: false";
-        // string sMsg3 = r_r1.boundData.maxY > r_r1.boundData.minY ? r_r1.name + " maxY > " + r_r2.name + " minY: true" : r_r1.name + " maxY > " + r_r2.name + " minY: false";
-        // string sMsg4 = r_r2.boundData.maxY > r_r1.boundData.minY ? r_r2.name + " maxY > " + r_r1.name + " minY: true" : r_r2.name + " maxY > " + r_r1.name + " minY: false";
-        // Debug.LogWarning(sMsg1);
-        // Debug.LogWarning(sMsg2);
-        // Debug.LogWarning(sMsg3);
-        // Debug.LogWarning(sMsg4);
-
         if (
         r_r1.boundData.maxX > r_r2.boundData.minX && 
         r_r2.boundData.maxX > r_r1.boundData.minX && 
@@ -69,8 +61,31 @@ public class DrawManager : MonoBehaviour
         }
     }
 
+    void TextVec()
+    {
+        Vector2 v2VecA = new Vector2(3, 4);
+        Debug.LogWarning("v2VecA length: " + GetVecLength(v2VecA));
+    }
+
+    float GetVecLength(Vector2 v_vec)
+    {
+        return Mathf.Sqrt((v_vec.x*v_vec.x) + (v_vec.y*v_vec.y));
+    }
+
+    float GetVecDot(Vector2 v_vecA, Vector2 v_vecB)
+    {
+        return (v_vecA.x * v_vecB.x) + (v_vecA.y * v_vecB.y);
+    }
+
+    float GetProjectLenght(Vector2 v_projectVec, Vector2 v_projectBaseVec)
+    {
+        float fDotProduct = GetVecDot(v_projectVec, v_projectBaseVec);
+        float fProjectBaseVecLength = GetVecLength(v_projectBaseVec);
+        return fDotProduct / fProjectBaseVecLength;
+    }
+
     void OnDrawGizmosSelected()
     {
-
+        
     }
 }

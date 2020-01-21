@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DetectCollider : MonoBehaviour
 {
@@ -36,7 +34,6 @@ public class DetectCollider : MonoBehaviour
     public udsBoundData boundData { get { return m_sttBoundData;} }
     
     public Transform target;
-    //[SerializeField] BoxCollider m_collider;
     udsPointData[] m_sttPointData;
     udsBoundData m_sttBoundData;
     const int POINT_DATA_COUNT = 4;
@@ -60,6 +57,14 @@ public class DetectCollider : MonoBehaviour
     bool m_bToogle;
 
     [SerializeField] Vector3[] m_v3AryPoint;
+    bool m_bEnable = false;
+    /// <summary>
+    /// This function is called when the object becomes enabled and active.
+    /// </summary>
+    void OnEnable()
+    {
+        m_bEnable = !m_bEnable;
+    }
 
     void Awake()
     {
@@ -82,10 +87,6 @@ public class DetectCollider : MonoBehaviour
         m_fDisCO = new float[POINT_DATA_COUNT];
         m_v3EndVec = new Vector3[POINT_DATA_COUNT];
         m_v3FinalPos = new Vector3[POINT_DATA_COUNT];
-        // m_sttPointData[0] = new udsPointData(new Vector3(m_collider.bounds.max.x, m_collider.bounds.max.y, m_collider.bounds.max.z));
-        // m_sttPointData[1] = new udsPointData(new Vector3(m_collider.bounds.max.x, m_collider.bounds.max.y, m_collider.bounds.min.z));
-        // m_sttPointData[2] = new udsPointData(new Vector3(m_collider.bounds.min.x, m_collider.bounds.max.y, m_collider.bounds.max.z));
-        // m_sttPointData[3] = new udsPointData(new Vector3(m_collider.bounds.min.x, m_collider.bounds.max.y, m_collider.bounds.min.z));
 
         m_sttPointData[0] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[0], gameObject.transform.localEulerAngles.y * (-1)) + new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z));
         m_sttPointData[1] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[1], gameObject.transform.localEulerAngles.y * (-1)) + new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z));
@@ -95,10 +96,6 @@ public class DetectCollider : MonoBehaviour
 
     void Update()
     {
-        // m_sttPointData[0].point = new Vector3(m_collider.bounds.max.x, m_collider.bounds.max.y, m_collider.bounds.max.z);
-        // m_sttPointData[1].point = new Vector3(m_collider.bounds.max.x, m_collider.bounds.max.y, m_collider.bounds.min.z);
-        // m_sttPointData[2].point = new Vector3(m_collider.bounds.min.x, m_collider.bounds.max.y, m_collider.bounds.max.z);
-        // m_sttPointData[3].point = new Vector3(m_collider.bounds.min.x, m_collider.bounds.max.y, m_collider.bounds.min.z);
         m_sttPointData[0] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[0], gameObject.transform.localEulerAngles.y * (-1)) + new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z));
         m_sttPointData[1] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[1], gameObject.transform.localEulerAngles.y * (-1)) + new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z));
         m_sttPointData[2] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[2], gameObject.transform.localEulerAngles.y * (-1)) + new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z));
@@ -106,19 +103,6 @@ public class DetectCollider : MonoBehaviour
 
         DrawRefLine();
         UpdateBoundData();
-        
-        if (transform.name == "Bullet")
-        {
-            Debug.LogWarning("0 / " + m_v3FinalPos[0]);
-            Debug.LogWarning("1 / " + m_v3FinalPos[1]);
-            Debug.LogWarning("2 / " + m_v3FinalPos[2]);
-            Debug.LogWarning("3 / " + m_v3FinalPos[3]);
-
-            Debug.LogWarning("fMinX / " + m_sttBoundData.minX);
-            Debug.LogWarning("fMaxX / " + m_sttBoundData.maxX);
-            Debug.LogWarning("fMinY / " + m_sttBoundData.minY);
-            Debug.LogWarning("fMaxY / " + m_sttBoundData.maxY);
-        }
 
         if (m_bToogle)
             GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", m_changeColor);
@@ -218,6 +202,9 @@ public class DetectCollider : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
+        if (m_bEnable == false)
+            return;
+            
         if (target != null)
         {
             // Draws a blue line from this transform to the target
@@ -242,5 +229,15 @@ public class DetectCollider : MonoBehaviour
             else
                 Gizmos.DrawLine(m_v3FinalPos[i], m_v3FinalPos[i+1]);
         }
+    }
+
+    Vector3 GetNormalL(Vector3 v_vec)
+    {
+        return new Vector3(-v_vec.z, v_vec.y, v_vec.x);
+    }
+
+    Vector3 GetNormalR(Vector3 v_vec)
+    {
+        return new Vector3(v_vec.z, v_vec.y, -v_vec.x);
     }
 }
