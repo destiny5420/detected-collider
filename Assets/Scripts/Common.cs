@@ -41,4 +41,14 @@ public class Common
         
         return m_vecResult; 
     }
+
+    public static Vector2 GetNormalL(Vector2 v_vec)
+    {
+        return new Vector2(-v_vec.y, v_vec.x);
+    }
+
+    public static Vector2 GetNormalR(Vector2 v_vec)
+    {
+        return new Vector2(v_vec.y, -v_vec.x);
+    }
 }

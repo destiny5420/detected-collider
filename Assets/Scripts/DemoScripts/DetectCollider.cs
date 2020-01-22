@@ -207,24 +207,14 @@ public class DetectCollider : MonoBehaviour
             v2PointA = m_v3FinalPos[i-1];
             v2PointB = m_v3FinalPos[i];
 
-            m_aryV2Normals[iArrayIndex] = GetNormalR(v2PointB - v2PointA);
+            m_aryV2Normals[iArrayIndex] = Common.GetNormalR(v2PointB - v2PointA);
             iArrayIndex++;
         }
 
         v2PointA = m_v3FinalPos[m_v3FinalPos.Length - 1];
         v2PointB = m_v3FinalPos[0];
-        m_aryV2Normals[iArrayIndex] = GetNormalR(v2PointB - v2PointA);
+        m_aryV2Normals[iArrayIndex] = Common.GetNormalR(v2PointB - v2PointA);
         return m_aryV2Normals;
-    }
-
-    Vector2 GetNormalL(Vector2 v_vec)
-    {
-        return new Vector2(-v_vec.y, v_vec.x);
-    }
-
-    Vector2 GetNormalR(Vector2 v_vec)
-    {
-        return new Vector2(v_vec.y, -v_vec.x);
     }
 
     public void TriggerEvent(bool v_key)
