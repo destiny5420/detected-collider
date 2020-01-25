@@ -123,12 +123,13 @@ public class DetectCollider : MonoBehaviour
 
     void CalRot()
     {
+        float fAngle = gameObject.transform.localEulerAngles.y * (-1);
         Vector3 v3ModifyPos = new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z);
         
-        m_sttObjPointData[0] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[0], gameObject.transform.localEulerAngles.y * (-1)) + v3ModifyPos);
-        m_sttObjPointData[1] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[1], gameObject.transform.localEulerAngles.y * (-1)) + v3ModifyPos);
-        m_sttObjPointData[2] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[2], gameObject.transform.localEulerAngles.y * (-1)) + v3ModifyPos);
-        m_sttObjPointData[3] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[3], gameObject.transform.localEulerAngles.y * (-1)) + v3ModifyPos);
+        m_sttObjPointData[0] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position + new Vector3(0.0f, m_v3AryPoint[0].y, 0.0f), gameObject.transform.position + m_v3AryPoint[0], fAngle) + v3ModifyPos);
+        m_sttObjPointData[1] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position + new Vector3(0.0f, m_v3AryPoint[1].y, 0.0f), gameObject.transform.position + m_v3AryPoint[1], fAngle) + v3ModifyPos);
+        m_sttObjPointData[2] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position + new Vector3(0.0f, m_v3AryPoint[2].y, 0.0f), gameObject.transform.position + m_v3AryPoint[2], fAngle) + v3ModifyPos);
+        m_sttObjPointData[3] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position + new Vector3(0.0f, m_v3AryPoint[3].y, 0.0f), gameObject.transform.position + m_v3AryPoint[3], fAngle) + v3ModifyPos);
     }
 
     void UpdateNormals()

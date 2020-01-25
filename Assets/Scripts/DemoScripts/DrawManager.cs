@@ -111,10 +111,7 @@ public class DrawManager : MonoBehaviour
             udsMinMaxData sttMinMaxDataA = GetMinMax(m_lisData[0].objName, m_lisData[0].finalPoints2D, m_lisData[0].normals[i]);
             udsMinMaxData sttMinMaxDataB = GetMinMax(m_lisData[1].objName, m_lisData[1].finalPoints2D, m_lisData[0].normals[i]);
             if (sttMinMaxDataA.min > sttMinMaxDataB.max || sttMinMaxDataB.min > sttMinMaxDataA.max)
-            {
-                Debug.Log("分離");
                 return true;
-            }
         }
 
         for (int i = 0; i < m_lisData[1].normals.Length; i++)
@@ -122,13 +119,9 @@ public class DrawManager : MonoBehaviour
             udsMinMaxData sttMinMaxDataA = GetMinMax(m_lisData[0].objName, m_lisData[0].finalPoints2D, m_lisData[1].normals[i]);
             udsMinMaxData sttMinMaxDataB = GetMinMax(m_lisData[1].objName, m_lisData[1].finalPoints2D, m_lisData[1].normals[i]);
             if (sttMinMaxDataA.min > sttMinMaxDataB.max || sttMinMaxDataB.min > sttMinMaxDataA.max)
-            {
-                Debug.Log("分離");
                 return true;
-            }
         }
 
-        Debug.Log("觸碰----");
         return false;
     }
 

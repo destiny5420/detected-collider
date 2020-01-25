@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Common
 {
-    static Vector3 m_vecResult;
+    static Vector3 m_v3VecResult;
 
     // public static Vector3 RoataeToPos(Vector3 v_target, float v_angle)
     // {
@@ -30,11 +30,11 @@ public class Common
         float fNewX = (v_target.x - v_ref.x) * Mathf.Cos(fAngle) - (v_target.z - v_ref.z) * Mathf.Sin(fAngle);
         float fNewZ = (v_target.x - v_ref.x) * Mathf.Sin(fAngle) + (v_target.z - v_ref.z) * Mathf.Cos(fAngle);
 
-        m_vecResult.x = fNewX;
-        m_vecResult.y = v_target.y;
-        m_vecResult.z = fNewZ;
+        m_v3VecResult.x = fNewX;
+        m_v3VecResult.y = v_target.y;
+        m_v3VecResult.z = fNewZ;
         
-        return m_vecResult; 
+        return m_v3VecResult; 
     }
 
     static float GetVecLength(Vector2 v_vec)
