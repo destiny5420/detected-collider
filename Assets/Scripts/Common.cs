@@ -42,6 +42,23 @@ public class Common
         return m_vecResult; 
     }
 
+    static float GetVecLength(Vector2 v_vec)
+    {
+        return Mathf.Sqrt((v_vec.x * v_vec.x) + (v_vec.y * v_vec.y));
+    }
+
+    static float GetVecDot(Vector2 v_vecA, Vector2 v_vecB)
+    {
+        return (v_vecA.x * v_vecB.x) + (v_vecA.y * v_vecB.y);
+    }
+
+    public static float GetProjectLenghtOnto(Vector2 v_projectVec, Vector2 v_projectBaseVec)
+    {
+        float fDotProduct = GetVecDot(v_projectVec, v_projectBaseVec);
+        float fProjectBaseVecLength = GetVecLength(v_projectBaseVec);
+        return fDotProduct / fProjectBaseVecLength;
+    }
+
     public static Vector2 GetNormalL(Vector2 v_vec)
     {
         return new Vector2(-v_vec.y, v_vec.x);

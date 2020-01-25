@@ -47,10 +47,10 @@ MonoBehaviour:
   target: {fileID: 0}
   m_camera: {fileID: 0}
   m_v3AryPoint:
-  - {x: 0.35, y: 0, z: 0.35}
-  - {x: -0.35, y: 0, z: 0.35}
-  - {x: -0.35, y: 0, z: -0.35}
-  - {x: 0.35, y: 0, z: -0.35}
+  - {x: 0.5, y: 0.5, z: 0.5}
+  - {x: -0.5, y: 0.5, z: 0.5}
+  - {x: -0.5, y: 0.5, z: -0.5}
+  - {x: 0.5, y: 0.5, z: -0.5}
 --- !u!1 &174975739939087083
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,7 +90,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 174975739939087083}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &174975739939087081
 MeshRenderer:
   m_ObjectHideFlags: 0

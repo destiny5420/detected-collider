@@ -49,7 +49,17 @@ public class DetectCollider : MonoBehaviour
     float[] m_fDisBO;
     float[] m_fDisCO;
     Vector3[] m_v3EndVec;
-    public Vector3[] m_v3FinalPos;
+
+    Vector3[] m_v3FinalPos;
+    public Vector3[] finalPoints{ get{ return m_v3FinalPos;} }
+
+    Vector2[] m_v2FinalPos;
+    public Vector2[] finalPoints2D { get{ return m_v2FinalPos;} }
+
+    Vector2[] m_v2Normals;
+    public Vector2[] normals { get{return m_v2Normals;} }
+
+    public string objName { get{return gameObject.name;} }
 
     Color m_oriColor;
     Color m_changeColor = Color.red;
@@ -87,27 +97,56 @@ public class DetectCollider : MonoBehaviour
         m_fDisCO = new float[POINT_DATA_COUNT];
         m_v3EndVec = new Vector3[POINT_DATA_COUNT];
         m_v3FinalPos = new Vector3[POINT_DATA_COUNT];
+        m_v2FinalPos = new Vector2[POINT_DATA_COUNT];
+        m_v2Normals = new Vector2[POINT_DATA_COUNT];
 
-        m_sttObjPointData[0] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[0], gameObject.transform.localEulerAngles.y * (-1)) + new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z));
-        m_sttObjPointData[1] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[1], gameObject.transform.localEulerAngles.y * (-1)) + new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z));
-        m_sttObjPointData[2] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[2], gameObject.transform.localEulerAngles.y * (-1)) + new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z));
-        m_sttObjPointData[3] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[3], gameObject.transform.localEulerAngles.y * (-1)) + new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z));
+        CalRot();
     }
 
     void Update()
+    {
+        CalVertexs();
+        UpdateNormals();
+        UpdateBoundData();
+        CheckTrigger();
+    }
+
+    void CheckTrigger()
+    {
+        if (m_bToogle)
+            GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", m_changeColor);
+        else
+            GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", m_oriColor);
+    }
+
+    void CalVertexs()
+    {
+        CalRot();
+
+        for (int i = 0; i < POINT_DATA_COUNT; i++)
+        {
+            m_v3VecA[i] = m_sttObjPointData[i].point - m_camera.transform.position;
+            m_v3VecB[i] = m_v3CenterPos - m_camera.transform.position;
+
+            float fUnit = (Vector3.Dot(m_v3VecA[i], m_v3VecB[i]) / DisForVector3(m_v3VecB[i]));
+            m_v3ResultPos[i] = new Vector3(m_v3VecB[i].x * fUnit, m_v3VecB[i].y * fUnit, m_v3VecB[i].z * fUnit) + m_camera.transform.position;
+            m_fDisBO[i] = Vector3.Distance(m_camera.transform.position, m_v3ResultPos[i]);
+            m_fDisAO[i] = Vector3.Distance(m_camera.transform.position, m_sttObjPointData[i].point);
+            m_fDisCO[i] = (m_fCenterHight * m_fDisAO[i]) / m_fDisBO[i];
+
+            Vector3 v3UnitVecA = Vector3.Normalize(m_v3VecA[i]);
+            m_v3EndVec[i] = v3UnitVecA * m_fDisCO[i];
+            m_v3FinalPos[i] = m_v3EndVec[i] + m_camera.transform.position; 
+            m_v2FinalPos[i] = new Vector2(m_v3FinalPos[i].x, m_v3FinalPos[i].z);
+        }
+    }
+
+    void CalRot()
     {
         m_sttObjPointData[0] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[0], gameObject.transform.localEulerAngles.y * (-1)) + new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z));
         m_sttObjPointData[1] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[1], gameObject.transform.localEulerAngles.y * (-1)) + new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z));
         m_sttObjPointData[2] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[2], gameObject.transform.localEulerAngles.y * (-1)) + new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z));
         m_sttObjPointData[3] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[3], gameObject.transform.localEulerAngles.y * (-1)) + new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z));
-
-        DrawRefLine();
-        UpdateBoundData();
-
-        if (m_bToogle)
-            GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", m_changeColor);
-        else
-            GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", m_oriColor);
     }
 
     void UpdateBoundData()
@@ -171,50 +210,29 @@ public class DetectCollider : MonoBehaviour
         m_sttBoundData.maxY = fMaxY;
     }
 
-    void DrawRefLine()
-    {
-        for (int i = 0; i < POINT_DATA_COUNT; i++)
-        {
-            m_v3VecA[i] = m_sttObjPointData[i].point - m_camera.transform.position;
-            m_v3VecB[i] = m_v3CenterPos - m_camera.transform.position;
-
-            float fUnit = (Vector3.Dot(m_v3VecA[i], m_v3VecB[i]) / DisForVector3(m_v3VecB[i]));
-            m_v3ResultPos[i] = new Vector3(m_v3VecB[i].x * fUnit, m_v3VecB[i].y * fUnit, m_v3VecB[i].z * fUnit) + m_camera.transform.position;
-            m_fDisBO[i] = Vector3.Distance(m_camera.transform.position, m_v3ResultPos[i]);
-            m_fDisAO[i] = Vector3.Distance(m_camera.transform.position, m_sttObjPointData[i].point);
-            m_fDisCO[i] = (m_fCenterHight * m_fDisAO[i]) / m_fDisBO[i];
-
-            Vector3 v3UnitVecA = Vector3.Normalize(m_v3VecA[i]);
-            m_v3EndVec[i] = v3UnitVecA * m_fDisCO[i];
-            m_v3FinalPos[i] = m_v3EndVec[i] + m_camera.transform.position; 
-        }
-    }
-
     float DisForVector3(Vector3 v_vec)
     {
         return Mathf.Pow(Mathf.Sqrt(Mathf.Pow(v_vec.x, 2) + Mathf.Pow(v_vec.y, 2) + Mathf.Pow(v_vec.z, 2)), 2);
     }
 
-    public Vector2[] GetNormals()
+    void UpdateNormals()
     {
-        Vector2[] m_aryV2Normals = new Vector2[m_v3FinalPos.Length];
         int iArrayIndex = 0;
         Vector2 v2PointA;
         Vector2 v2PointB;
 
-        for (int i = 1; i < m_v3FinalPos.Length; i++)
+        for (int i = 1; i < m_v2FinalPos.Length; i++)
         {
-            v2PointA = m_v3FinalPos[i-1];
-            v2PointB = m_v3FinalPos[i];
+            v2PointA = m_v2FinalPos[i-1];
+            v2PointB = m_v2FinalPos[i];
 
-            m_aryV2Normals[iArrayIndex] = Common.GetNormalR(v2PointB - v2PointA);
+            m_v2Normals[iArrayIndex] = Common.GetNormalR(v2PointB - v2PointA);
             iArrayIndex++;
         }
 
-        v2PointA = m_v3FinalPos[m_v3FinalPos.Length - 1];
-        v2PointB = m_v3FinalPos[0];
-        m_aryV2Normals[iArrayIndex] = Common.GetNormalR(v2PointB - v2PointA);
-        return m_aryV2Normals;
+        v2PointA = m_v2FinalPos[m_v2FinalPos.Length - 1];
+        v2PointB = m_v2FinalPos[0];
+        m_v2Normals[iArrayIndex] = Common.GetNormalR(v2PointB - v2PointA);
     }
 
     public void TriggerEvent(bool v_key)
@@ -262,6 +280,23 @@ public class DetectCollider : MonoBehaviour
                 Gizmos.DrawLine(m_v3FinalPos[i], m_v3FinalPos[0]);
             else
                 Gizmos.DrawLine(m_v3FinalPos[i], m_v3FinalPos[i+1]);
+        }
+
+        Gizmos.color = Color.red;
+
+        for (int i = 0; i < normals.Length; i++)
+        {
+            if (i == 0)
+                    Gizmos.color = Color.red;
+                else if (i == 1)
+                    Gizmos.color = Color.yellow;
+                else if (i == 2)
+                    Gizmos.color = Color.green; 
+                else if (i == 3)
+                    Gizmos.color = Color.blue;
+                else
+                    Gizmos.color = Color.gray;
+            Gizmos.DrawSphere(new Vector3(normals[i].x, 0.0f, normals[i].y), DRAW_SPHERE_RADIO);
         }
     }
 }

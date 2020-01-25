@@ -12,8 +12,7 @@ public class DrawManager : MonoBehaviour
     void Awake()
     {
         m_lisData = new List<DetectCollider>();
-
-        TextVec();
+        m_sttAryMinMaxData = new udsMinMaxData[2];
     }
 
     public static void Regist(DetectCollider r_obj)
@@ -21,156 +20,157 @@ public class DrawManager : MonoBehaviour
         m_lisData.Add(r_obj);
     }
 
-    void Start()
-    {
-
-    }
-
-    // bool ComparerCollider(DetectCollider r_r1, DetectCollider r_r2)
-    // {
-    //     if (
-    //     r_r1.boundData.maxX > r_r2.boundData.minX && 
-    //     r_r2.boundData.maxX > r_r1.boundData.minX && 
-    //     r_r1.boundData.maxY > r_r2.boundData.minY && 
-    //     r_r2.boundData.maxY > r_r1.boundData.minY 
-    //     )
-    //     {
-    //          return true;
-    //     }
-    //     else
-    //         return false;
-    // }
-
     bool ComparerCollider(DetectCollider r_r1, DetectCollider r_r2)
     {
-        Vector2[] v2AryNormals_R1 = r_r1.GetNormals();
-        Vector2[] v2AryNormals_R2 = r_r2.GetNormals();
+        // Vector2[] v2AryNormals_R1 = r_r1.GetNormals();
+        // Vector2[] v2AryNormals_R2 = r_r2.GetNormals();
         
-        udsMinMaxData MinMax_P_A = GetMinMax(r_r1.m_v3FinalPos, v2AryNormals_R1[0]);
-        udsMinMaxData MinMax_P_B = GetMinMax(r_r2.m_v3FinalPos, v2AryNormals_R1[0]);
-        udsMinMaxData MinMax_Q_A = GetMinMax(r_r1.m_v3FinalPos, v2AryNormals_R1[1]);
-        udsMinMaxData MinMax_Q_B = GetMinMax(r_r2.m_v3FinalPos, v2AryNormals_R1[1]);
+        // udsMinMaxData MinMax_P_A = GetMinMax(r_r1.finalPoints, v2AryNormals_R1[0]);
+        // udsMinMaxData MinMax_P_B = GetMinMax(r_r2.finalPoints, v2AryNormals_R1[0]);
+        // udsMinMaxData MinMax_Q_A = GetMinMax(r_r1.finalPoints, v2AryNormals_R1[1]);
+        // udsMinMaxData MinMax_Q_B = GetMinMax(r_r2.finalPoints, v2AryNormals_R1[1]);
 
-        udsMinMaxData MinMax_R_A = GetMinMax(r_r1.m_v3FinalPos, v2AryNormals_R2[0]);
-        udsMinMaxData MinMax_R_B = GetMinMax(r_r2.m_v3FinalPos, v2AryNormals_R2[0]);
-        udsMinMaxData MinMax_S_A = GetMinMax(r_r1.m_v3FinalPos, v2AryNormals_R2[1]);
-        udsMinMaxData MinMax_S_B = GetMinMax(r_r2.m_v3FinalPos, v2AryNormals_R2[1]);
+        // udsMinMaxData MinMax_R_A = GetMinMax(r_r1.finalPoints, v2AryNormals_R2[0]);
+        // udsMinMaxData MinMax_R_B = GetMinMax(r_r2.finalPoints, v2AryNormals_R2[0]);
+        // udsMinMaxData MinMax_S_A = GetMinMax(r_r1.finalPoints, v2AryNormals_R2[1]);
+        // udsMinMaxData MinMax_S_B = GetMinMax(r_r2.finalPoints, v2AryNormals_R2[1]);
 
-        bool bSeparate_P = false;
-        bool bSeparate_Q = false;
-        bool bSeparate_R = false;
-        bool bSeparate_S = false;
+        // bool bSeparate_P = false;
+        // bool bSeparate_Q = false;
+        // bool bSeparate_R = false;
+        // bool bSeparate_S = false;
         
-        if (MinMax_P_B.min > MinMax_P_A.max || MinMax_P_A.min > MinMax_P_B.max)
-            bSeparate_P = true;
+        // if (MinMax_P_B.min > MinMax_P_A.max || MinMax_P_A.min > MinMax_P_B.max)
+        //     bSeparate_P = true;
 
-        if (MinMax_Q_B.min > MinMax_Q_A.max || MinMax_Q_A.min > MinMax_Q_B.max)
-            bSeparate_Q = true;
+        // if (MinMax_Q_B.min > MinMax_Q_A.max || MinMax_Q_A.min > MinMax_Q_B.max)
+        //     bSeparate_Q = true;
 
-        if (MinMax_R_B.min > MinMax_R_A.max || MinMax_R_A.min > MinMax_R_B.max)
-            bSeparate_R = true;
+        // if (MinMax_R_B.min > MinMax_R_A.max || MinMax_R_A.min > MinMax_R_B.max)
+        //     bSeparate_R = true;
 
-        if (MinMax_S_B.min > MinMax_S_A.max || MinMax_S_A.min > MinMax_S_B.max)
-            bSeparate_S = true;
+        // if (MinMax_S_B.min > MinMax_S_A.max || MinMax_S_A.min > MinMax_S_B.max)
+        //     bSeparate_S = true;
 
-        if (bSeparate_P == true || bSeparate_Q == true || bSeparate_R == true || bSeparate_S == true)
-        {
-            Debug.LogWarning("分離");
-            return false;
-        }
-        else
-        {
-            Debug.LogError("碰撞");
-            return true;
-        }
+        // if (bSeparate_P == true || bSeparate_Q == true || bSeparate_R == true || bSeparate_S == true)
+        // {
+        //     Debug.LogWarning("分離");
+        //     return false;
+        // }
+        // else
+        // {
+        //     Debug.LogError("碰撞");
+        //     return true;
+        // }
+
+        return false;
     }
 
     void Update()
     {
-        if (m_lisData.Count >= 2)
+        TestFunction();
+
+        if (CalTrigger() == true)
         {
-            for (int i = 0; i < m_lisData.Count - 1; i++)
-            {
-                if (ComparerCollider(m_lisData[i], m_lisData[i + 1]))
-                {
-                    m_lisData[i].TriggerEvent(true);
-                    m_lisData[i+1].TriggerEvent(true);
-                }
-                else
-                {
-                    m_lisData[i].TriggerEvent(false);
-                    m_lisData[i+1].TriggerEvent(false);
-                }
-            }
+            for (int i = 0; i < m_lisData.Count; i++)
+                m_lisData[i].TriggerEvent(false);
+        }
+        else
+        {
+            for (int i = 0; i < m_lisData.Count; i++)
+                m_lisData[i].TriggerEvent(true);
         }
     }
 
-    void TextVec()
+    Vector3 m_v3EndVec = new Vector3(10.0f, 0.0f, 3.0f);
+    Vector3 m_v3StartVec = new Vector3(-5.0f, 0.0f, 3.0f);
+    Vector3 m_v3Axis;
+    udsMinMaxData[] m_sttAryMinMaxData;
+    int m_iMinMaxDataIndex = 0;
+
+    void TestFunction()
     {
-        Vector2 v2VecA = new Vector2(3, 4);
-        Debug.LogWarning("v2VecA length: " + GetVecLength(v2VecA));
+        m_iMinMaxDataIndex = 0;
+        m_v3Axis = m_v3EndVec - m_v3StartVec;
+        Vector2 v2VecBaseAxis = new Vector2(m_v3Axis.x, m_v3Axis.z);
+
+        for (int j = 0; j < m_lisData.Count; j++)
+        {
+            // for (int i = 0; i < m_lisData[j].finalPoints.Length; i++)
+            //     Debug.Log(m_lisData[j].objName +  " / Detedced Vertex["+i+"]: " + m_lisData[j].finalPoints2D[i]);
+
+            m_sttAryMinMaxData[m_iMinMaxDataIndex] = GetMinMax(m_lisData[j].objName, m_lisData[j].finalPoints2D, v2VecBaseAxis);
+            m_iMinMaxDataIndex++;
+        }
     }
 
-    float GetVecLength(Vector2 v_vec)
+    bool CalTrigger()
     {
-        return Mathf.Sqrt((v_vec.x*v_vec.x) + (v_vec.y*v_vec.y));
-    }
+        for (int i = 0; i < m_lisData[0].normals.Length; i++)
+        {
+            udsMinMaxData sttMinMaxDataA = GetMinMax(m_lisData[0].objName, m_lisData[0].finalPoints2D, m_lisData[0].normals[i]);
+            udsMinMaxData sttMinMaxDataB = GetMinMax(m_lisData[1].objName, m_lisData[1].finalPoints2D, m_lisData[0].normals[i]);
+            if (sttMinMaxDataA.min > sttMinMaxDataB.max || sttMinMaxDataB.min > sttMinMaxDataA.max)
+            {
+                Debug.Log("分離");
+                return true;
+            }
+        }
 
-    float GetVecDot(Vector2 v_vecA, Vector2 v_vecB)
-    {
-        return (v_vecA.x * v_vecB.x) + (v_vecA.y * v_vecB.y);
-    }
+        for (int i = 0; i < m_lisData[1].normals.Length; i++)
+        {
+            udsMinMaxData sttMinMaxDataA = GetMinMax(m_lisData[0].objName, m_lisData[0].finalPoints2D, m_lisData[1].normals[i]);
+            udsMinMaxData sttMinMaxDataB = GetMinMax(m_lisData[1].objName, m_lisData[1].finalPoints2D, m_lisData[1].normals[i]);
+            if (sttMinMaxDataA.min > sttMinMaxDataB.max || sttMinMaxDataB.min > sttMinMaxDataA.max)
+            {
+                Debug.Log("分離");
+                return true;
+            }
+        }
 
-    float GetProjectLenghtOnto(Vector2 v_projectVec, Vector2 v_projectBaseVec)
-    {
-        float fDotProduct = GetVecDot(v_projectVec, v_projectBaseVec);
-        float fProjectBaseVecLength = GetVecLength(v_projectBaseVec);
-        return fDotProduct / fProjectBaseVecLength;
+        Debug.Log("觸碰----");
+        return false;
     }
 
     struct udsMinMaxData
     {
         public float min{ get; set; }
         public float max{ get; set; }
-        
-        public udsMinMaxData(float v_min, float v_max)
+        public string name { get;set; }
+
+        public udsMinMaxData(string v_name, float v_min, float v_max)
         {
+            name = v_name;
             min = v_min;
             max = v_max;
         }
     }
 
-    Vector2 m_v2Axis = new Vector2(1.0f, -1.0f);
-    int m_iMin_Index = 0;
-    int m_iMax_Index = 0;
-
-    udsMinMaxData GetMinMax(Vector3[] r_verticex, Vector2 v_axis)
+    udsMinMaxData GetMinMax(string v_name, Vector2[] r_verticex, Vector2 v_axis)
     {
-        float fMin_DotPorduct = GetProjectLenghtOnto(new Vector2(r_verticex[0].x, r_verticex[0].z), m_v2Axis);
-        float fMax_DotPorduct = GetProjectLenghtOnto(new Vector2(r_verticex[0].x, r_verticex[0].z), m_v2Axis);
+        float fMin_DotPorduct = Common.GetProjectLenghtOnto(r_verticex[0], v_axis);
+        float fMax_DotPorduct = Common.GetProjectLenghtOnto(r_verticex[0], v_axis);
 
         for (int i = 0; i < r_verticex.Length; i++)
         {
-            float fTmp = GetProjectLenghtOnto(new Vector2(r_verticex[i].x, r_verticex[i].z), m_v2Axis);
+            float fTmp = Common.GetProjectLenghtOnto(r_verticex[i], v_axis);
 
             if (fTmp < fMin_DotPorduct)
-            {
                 fMin_DotPorduct = fTmp;
-                m_iMin_Index = i;
-            }
 
             if (fTmp > fMax_DotPorduct)
-            {
                 fMax_DotPorduct = fTmp;
-                m_iMin_Index = i;
-            }
         }
 
-        return new udsMinMaxData(fMin_DotPorduct, fMax_DotPorduct);
+        return new udsMinMaxData(v_name, fMin_DotPorduct, fMax_DotPorduct);
     }
 
+    const float DRAW_SPHERE_RADIO = 0.05f;
     void OnDrawGizmosSelected()
     {
-        
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(m_v3EndVec, m_v3StartVec);
+        Gizmos.DrawSphere(m_v3EndVec, DRAW_SPHERE_RADIO);
+        Gizmos.DrawSphere(m_v3StartVec, DRAW_SPHERE_RADIO);
     }
 }
