@@ -14,28 +14,8 @@ public class DetectCollider : MonoBehaviour
     }
     public udsPointData[] pointDatas { get { return m_sttObjPointData;} }
 
-    public struct udsBoundData
-    {
-        public DetectCollider m_object;
-        public float minX { get;set; }
-        public float maxX { get;set; }
-        public float minY { get;set; }
-        public float maxY { get;set; }
-
-        public udsBoundData(DetectCollider r_obj)
-        {
-            m_object = r_obj;
-            minX = 0;
-            maxX = 0;
-            minY = 0;
-            maxY = 0;
-        }
-    }
-    public udsBoundData boundData { get { return m_sttBoundData;} }
-    
     public Transform target;
     udsPointData[] m_sttObjPointData;
-    udsBoundData m_sttBoundData;
     const int POINT_DATA_COUNT = 4;
     const float DRAW_SPHERE_RADIO = 0.05f;
 
@@ -80,14 +60,13 @@ public class DetectCollider : MonoBehaviour
     {
         m_bToogle = false;
         m_v3CenterPos = new Vector3(0.0f, 0.0f, 0.0f);
-        m_fCenterHight = Vector3.Distance(m_camera.transform.position, m_v3CenterPos);
+        
         m_oriColor = GetComponentInChildren<MeshRenderer>().material.GetColor("_Color");
     }
     
     void Start()
     {
         m_sttObjPointData = new udsPointData[POINT_DATA_COUNT];
-        m_sttBoundData = new udsBoundData(this);
         DrawManager.Regist(this);
         m_v3VecA = new Vector3[POINT_DATA_COUNT];
         m_v3VecB = new Vector3[POINT_DATA_COUNT];
@@ -107,7 +86,6 @@ public class DetectCollider : MonoBehaviour
     {
         CalVertexs();
         UpdateNormals();
-        UpdateBoundData();
         CheckTrigger();
     }
 
@@ -121,6 +99,8 @@ public class DetectCollider : MonoBehaviour
 
     void CalVertexs()
     {
+        m_fCenterHight = Vector3.Distance(m_camera.transform.position, m_v3CenterPos);
+
         CalRot();
 
         for (int i = 0; i < POINT_DATA_COUNT; i++)
@@ -128,7 +108,7 @@ public class DetectCollider : MonoBehaviour
             m_v3VecA[i] = m_sttObjPointData[i].point - m_camera.transform.position;
             m_v3VecB[i] = m_v3CenterPos - m_camera.transform.position;
 
-            float fUnit = (Vector3.Dot(m_v3VecA[i], m_v3VecB[i]) / DisForVector3(m_v3VecB[i]));
+            float fUnit = (Vector3.Dot(m_v3VecA[i], m_v3VecB[i]) / Common.DisForVector3(m_v3VecB[i]));
             m_v3ResultPos[i] = new Vector3(m_v3VecB[i].x * fUnit, m_v3VecB[i].y * fUnit, m_v3VecB[i].z * fUnit) + m_camera.transform.position;
             m_fDisBO[i] = Vector3.Distance(m_camera.transform.position, m_v3ResultPos[i]);
             m_fDisAO[i] = Vector3.Distance(m_camera.transform.position, m_sttObjPointData[i].point);
@@ -143,76 +123,12 @@ public class DetectCollider : MonoBehaviour
 
     void CalRot()
     {
-        m_sttObjPointData[0] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[0], gameObject.transform.localEulerAngles.y * (-1)) + new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z));
-        m_sttObjPointData[1] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[1], gameObject.transform.localEulerAngles.y * (-1)) + new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z));
-        m_sttObjPointData[2] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[2], gameObject.transform.localEulerAngles.y * (-1)) + new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z));
-        m_sttObjPointData[3] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[3], gameObject.transform.localEulerAngles.y * (-1)) + new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z));
-    }
-
-    void UpdateBoundData()
-    {
-        float fMinX = 0.0f;
-        float fMaxX = 0.0f;
-        float fMinY = 0.0f;
-        float fMaxY = 0.0f;
-
-        // Min X
-        for (int i = 0; i < m_v3FinalPos.Length; i++)
-        {
-            if (i == 0)
-                fMinX = m_v3FinalPos[0].x;
-            else
-            {
-                if (m_v3FinalPos[i].x < fMinX)
-                    fMinX = m_v3FinalPos[i].x;
-            }    
-        }
-
-        // Max X
-        for (int i = 0; i < m_v3FinalPos.Length; i++)
-        {
-            if (i == 0)
-                fMaxX = m_v3FinalPos[0].x;
-            else
-            {
-                if (m_v3FinalPos[i].x > fMaxX)
-                    fMaxX = m_v3FinalPos[i].x;
-            }    
-        }
-
-        // Min Y
-        for (int i = 0; i < m_v3FinalPos.Length; i++)
-        {
-            if (i == 0)
-                fMinY = m_v3FinalPos[0].z;
-            else
-            {
-                if (m_v3FinalPos[i].z < fMinY)
-                    fMinY = m_v3FinalPos[i].z;
-            }    
-        }
-
-        // Max Y
-        for (int i = 0; i < m_v3FinalPos.Length; i++)
-        {
-            if (i == 0)
-                fMaxY = m_v3FinalPos[0].z;
-            else
-            {
-                if (m_v3FinalPos[i].z > fMaxY)
-                    fMaxY = m_v3FinalPos[i].z;
-            }    
-        }
-
-        m_sttBoundData.minX = fMinX;
-        m_sttBoundData.maxX = fMaxX;
-        m_sttBoundData.minY = fMinY;
-        m_sttBoundData.maxY = fMaxY;
-    }
-
-    float DisForVector3(Vector3 v_vec)
-    {
-        return Mathf.Pow(Mathf.Sqrt(Mathf.Pow(v_vec.x, 2) + Mathf.Pow(v_vec.y, 2) + Mathf.Pow(v_vec.z, 2)), 2);
+        Vector3 v3ModifyPos = new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z);
+        
+        m_sttObjPointData[0] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[0], gameObject.transform.localEulerAngles.y * (-1)) + v3ModifyPos);
+        m_sttObjPointData[1] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[1], gameObject.transform.localEulerAngles.y * (-1)) + v3ModifyPos);
+        m_sttObjPointData[2] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[2], gameObject.transform.localEulerAngles.y * (-1)) + v3ModifyPos);
+        m_sttObjPointData[3] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position, gameObject.transform.position + m_v3AryPoint[3], gameObject.transform.localEulerAngles.y * (-1)) + v3ModifyPos);
     }
 
     void UpdateNormals()
@@ -249,21 +165,8 @@ public class DetectCollider : MonoBehaviour
         {
             // Draws a blue line from this transform to the target
             Gizmos.color = Color.blue;
-
             for (int i = 0; i < POINT_DATA_COUNT; i++)
-            {
-                if (i == 0)
-                    Gizmos.color = Color.red;
-                else if (i == 1)
-                    Gizmos.color = Color.yellow;
-                else if (i == 2)
-                    Gizmos.color = Color.green; 
-                else if (i == 3)
-                    Gizmos.color = Color.blue;
-                else
-                    Gizmos.color = Color.gray;
                 Gizmos.DrawSphere(m_sttObjPointData[i].point, DRAW_SPHERE_RADIO);
-            }
         }
 
         Gizmos.color = Color.yellow;
@@ -285,18 +188,6 @@ public class DetectCollider : MonoBehaviour
         Gizmos.color = Color.red;
 
         for (int i = 0; i < normals.Length; i++)
-        {
-            if (i == 0)
-                    Gizmos.color = Color.red;
-                else if (i == 1)
-                    Gizmos.color = Color.yellow;
-                else if (i == 2)
-                    Gizmos.color = Color.green; 
-                else if (i == 3)
-                    Gizmos.color = Color.blue;
-                else
-                    Gizmos.color = Color.gray;
             Gizmos.DrawSphere(new Vector3(normals[i].x, 0.0f, normals[i].y), DRAW_SPHERE_RADIO);
-        }
     }
 }
