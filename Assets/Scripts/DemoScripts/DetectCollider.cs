@@ -31,8 +31,8 @@ public class DetectCollider : MonoBehaviour
 
     [SerializeField] Camera m_camera;
     int m_iPointCnt = 8;
-    float m_fCenterHight;
-    Vector3 m_v3CenterPos;
+    float m_fCenterLength;
+    Vector3 m_v3CenterVec;
     Vector3[] m_v3VecA;
     Vector3[] m_v3VecB;
     Vector3[] m_v3ResultPos;
@@ -57,7 +57,7 @@ public class DetectCollider : MonoBehaviour
     {
         m_iPointCnt = m_v3AryPoint.Length;
         m_bToogle = false;
-        m_v3CenterPos = new Vector3(0.0f, 0.0f, 0.0f);
+        m_v3CenterVec = new Vector3(0.0f, 0.0f, 0.0f);
         
         m_oriColor = GetComponentInChildren<MeshRenderer>().material.GetColor("_Color");
     }
@@ -97,20 +97,21 @@ public class DetectCollider : MonoBehaviour
 
     void CalVertexs()
     {
-        m_fCenterHight = Vector3.Distance(m_camera.transform.position, m_v3CenterPos);
+        m_fCenterLength = Vector3.Distance(m_camera.transform.position, m_v3CenterVec);
 
         CalRot();
 
         for (int i = 0; i < m_iPointCnt; i++)
         {
             m_v3VecA[i] = m_sttObjPointData[i].point - m_camera.transform.position;
-            m_v3VecB[i] = m_v3CenterPos - m_camera.transform.position;
+            m_v3VecB[i] = m_v3CenterVec - m_camera.transform.position;
 
-            float fUnit = (Vector3.Dot(m_v3VecA[i], m_v3VecB[i]) / Common.DisForVector3(m_v3VecB[i]));
-            m_v3ResultPos[i] = new Vector3(m_v3VecB[i].x * fUnit, m_v3VecB[i].y * fUnit, m_v3VecB[i].z * fUnit) + m_camera.transform.position;
+            float fUnitVec = (Vector3.Dot(m_v3VecA[i], m_v3VecB[i]) / Common.DisForVector3(m_v3VecB[i]));
+            m_v3ResultPos[i] = (m_v3VecB[i] * fUnitVec) + m_camera.transform.position;
+            
             m_fDisBO[i] = Vector3.Distance(m_camera.transform.position, m_v3ResultPos[i]);
             m_fDisAO[i] = Vector3.Distance(m_camera.transform.position, m_sttObjPointData[i].point);
-            m_fDisCO[i] = (m_fCenterHight * m_fDisAO[i]) / m_fDisBO[i];
+            m_fDisCO[i] = (m_fCenterLength * m_fDisAO[i]) / m_fDisBO[i];
 
             Vector3 v3UnitVecA = Vector3.Normalize(m_v3VecA[i]);
             m_v3EndVec[i] = v3UnitVecA * m_fDisCO[i];
