@@ -2,8 +2,7 @@
 
 由於公司的專案是屬於2D類型的遊戲，也就使用了Unity中的BoxCollider2D來做偵測判斷，攝影機的方面，也選擇了正投影(Orthographic)模式來使用。不過因想嘗試著導入3D模組，也讓匯入的模型能有透視的感覺，因此也將攝影機改為透視(Perspective)模式。
 
-因專案的特性，必須保與2D物件有深度(depth)的特性，且搭配著透視攝影機來製作
-而讓我們最先面臨到的問題就是 <br>
+因專案的特性，必須保與2D物件有深度(depth)的特性，且搭配著透視攝影機來製作，而讓我們最先面臨到的問題是<br>
 <strong>「玩家看到物件與物件碰撞了，但碰撞塊卻沒碰撞到」</strong>
 
 <br>
@@ -39,8 +38,7 @@
 
 <br>
 
-$$
-\frac
-{(\vec{A}\cdot\vec{B})\vec{B}}
-{\lvert\vec{B}\rvert^2}
-$$
+<p align="center">
+<a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{120}&space;\large&space;$$&space;\frac&space;{(\vec{A}\cdot\vec{B})\vec{B}}&space;{\lvert\vec{B}\rvert^2}&space;$$" target="_blank"><img src="https://latex.codecogs.com/png.latex?\dpi{120}&space;\large&space;$$&space;\frac&space;{(\vec{A}\cdot\vec{B})\vec{B}}&space;{\lvert\vec{B}\rvert^2}&space;$$" title="\large $$ \frac {(\vec{A}\cdot\vec{B})\vec{B}} {\lvert\vec{B}\rvert^2} $$" />
+</a>
+</p>
