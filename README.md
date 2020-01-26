@@ -8,7 +8,7 @@
 
 <br>
 <p align="left">
-<img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/image_01.png">
+<img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/Artboard_1.png">
 </p>
 
 <p align="center"><em>Orthographic Camera</em></p>
