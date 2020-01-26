@@ -12,10 +12,21 @@ public class DetectCollider : MonoBehaviour
             dataIndex = 0;
         }
     }
+
+    udsPointData[] m_sttObjPointData;
     public udsPointData[] pointDatas { get { return m_sttObjPointData;} }
 
-    public Transform target;
-    udsPointData[] m_sttObjPointData;
+    Vector3[] m_v3FinalPos;
+    public Vector3[] finalPoints{ get{ return m_v3FinalPos;} }
+
+    Vector2[] m_v2FinalPos;
+    public Vector2[] finalPoints2D { get{ return m_v2FinalPos;} }
+
+    Vector2[] m_v2Normals;
+    public Vector2[] normals { get{return m_v2Normals;} }
+
+    public string objName { get{return gameObject.name;} }
+    
     const int POINT_DATA_COUNT = 4;
     const float DRAW_SPHERE_RADIO = 0.05f;
 
@@ -30,27 +41,13 @@ public class DetectCollider : MonoBehaviour
     float[] m_fDisCO;
     Vector3[] m_v3EndVec;
 
-    Vector3[] m_v3FinalPos;
-    public Vector3[] finalPoints{ get{ return m_v3FinalPos;} }
-
-    Vector2[] m_v2FinalPos;
-    public Vector2[] finalPoints2D { get{ return m_v2FinalPos;} }
-
-    Vector2[] m_v2Normals;
-    public Vector2[] normals { get{return m_v2Normals;} }
-
-    public string objName { get{return gameObject.name;} }
-
     Color m_oriColor;
     Color m_changeColor = Color.red;
 
-    bool m_bToogle;
-
     [SerializeField] Vector3[] m_v3AryPoint;
+    bool m_bToogle;
     bool m_bEnable = false;
-    /// <summary>
-    /// This function is called when the object becomes enabled and active.
-    /// </summary>
+
     void OnEnable()
     {
         m_bEnable = !m_bEnable;
@@ -162,13 +159,9 @@ public class DetectCollider : MonoBehaviour
         if (m_bEnable == false)
             return;
             
-        if (target != null)
-        {
-            // Draws a blue line from this transform to the target
-            Gizmos.color = Color.blue;
-            for (int i = 0; i < POINT_DATA_COUNT; i++)
-                Gizmos.DrawSphere(m_sttObjPointData[i].point, DRAW_SPHERE_RADIO);
-        }
+        Gizmos.color = Color.blue;
+        for (int i = 0; i < POINT_DATA_COUNT; i++)
+            Gizmos.DrawSphere(m_sttObjPointData[i].point, DRAW_SPHERE_RADIO);
 
         Gizmos.color = Color.yellow;
 
