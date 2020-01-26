@@ -121,12 +121,17 @@ public class DetectCollider : MonoBehaviour
 
     void CalRot()
     {
-        float fAngle = gameObject.transform.localEulerAngles.y * (-1);
+        float fAxisY = gameObject.transform.localEulerAngles.y * (-1);
         Vector3 v3ModifyPos = new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z);
         
         for (int i = 0; i < m_iPointCnt; i++)
-            m_sttObjPointData[i] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position + new Vector3(0.0f, m_v3AryPoint[i].y, 0.0f), gameObject.transform.position + m_v3AryPoint[i], fAngle) + v3ModifyPos);
-    }
+        {
+            Vector3 v3Target = gameObject.transform.position + new Vector3(0.0f, m_v3AryPoint[i].y, 0.0f);
+            Vector3 v3Ref = gameObject.transform.position + m_v3AryPoint[i];
+            Vector3 v3Point = Common.RoataeToPosAxisY(v3Target, v3Ref, fAxisY) + v3ModifyPos;
+            m_sttObjPointData[i] = new udsPointData(v3Point);
+        }
+}
 
     void UpdateNormals()
     {
@@ -172,15 +177,15 @@ public class DetectCollider : MonoBehaviour
             Gizmos.color = Color.green;
             Gizmos.DrawSphere(m_v3FinalPos[i], 0.05f);
 
-            if (i == m_iPointCnt - 1)
-                Gizmos.DrawLine(m_v3FinalPos[i], m_v3FinalPos[0]);
-            else
-                Gizmos.DrawLine(m_v3FinalPos[i], m_v3FinalPos[i+1]);
+            // if (i == m_iPointCnt - 1)
+            //     Gizmos.DrawLine(m_v3FinalPos[i], m_v3FinalPos[0]);
+            // else
+            //     Gizmos.DrawLine(m_v3FinalPos[i], m_v3FinalPos[i+1]);
         }
 
-        Gizmos.color = Color.red;
-
-        for (int i = 0; i < normals.Length; i++)
-            Gizmos.DrawSphere(new Vector3(normals[i].x, 0.0f, normals[i].y), DRAW_SPHERE_RADIO);
+        // Draw normal point
+        // Gizmos.color = Color.red;
+        // for (int i = 0; i < normals.Length; i++)
+        //     Gizmos.DrawSphere(new Vector3(normals[i].x, 0.0f, normals[i].y), DRAW_SPHERE_RADIO);
     }
 }

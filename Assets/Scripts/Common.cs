@@ -24,7 +24,7 @@ public class Common
         return Mathf.Pow(Mathf.Sqrt(Mathf.Pow(v_vec.x, 2) + Mathf.Pow(v_vec.y, 2) + Mathf.Pow(v_vec.z, 2)), 2);
     }
 
-    public static Vector3 RoataeToPos2(Vector3 v_target, Vector3 v_ref, float v_angle)
+    public static Vector3 RoataeToPosAxisY(Vector3 v_target, Vector3 v_ref, float v_angle)
     {
         float fAngle = v_angle * Mathf.Deg2Rad;
         float fNewX = (v_target.x - v_ref.x) * Mathf.Cos(fAngle) - (v_target.z - v_ref.z) * Mathf.Sin(fAngle);
