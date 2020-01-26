@@ -8,7 +8,14 @@
 
 <br>
 <p align="left">
-<img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/image_01.png">
+在攝影機為Orthographic模式下的狀態
+<img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/Artboard_1.png">
 </p>
-
 <p align="center"><em>Orthographic Camera</em></p>
+
+<br>
+<p align="left">
+在攝影機為Perspective模式下的狀態
+<img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/Artboard_2.png">
+</p>
+<p align="center"><em>Perspective Camera</em></p>
