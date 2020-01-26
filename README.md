@@ -23,8 +23,18 @@
 <br>
 在圖1-1中可見，原本使用BoxCollider2D在正投影攝影機下是沒問題的，但是在圖1-2的透視攝影機中，因透視的關係，導致玩家在視覺上已經看到物件碰撞，但在物理碰撞上其實尚未碰撞
 <br>
+<br>
+<br>
 
-# 解決方式
+## 解決方式
 1. 從攝影機打出一條射線，通過物件的其中一個點延伸至一個虛擬平面上
 2. 將物件延伸至虛擬平面上的所有點成一個偵測範圍
 3. 使用 <em>**分離軸定理**</em> 來做碰撞判斷
+
+<br>
+<p align="left">
+<img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/Artboard_3.png">
+</p>
+<p align="center"><em>圖1-3 projection of plane</em></p>
+
+<br>
