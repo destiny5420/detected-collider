@@ -27,12 +27,12 @@ public class DetectCollider : MonoBehaviour
 
     public string objName { get{return gameObject.name;} }
     
-    const int POINT_DATA_COUNT = 4;
     const float DRAW_SPHERE_RADIO = 0.05f;
 
+    [SerializeField] Camera m_camera;
+    int m_iPointCnt = 8;
     float m_fCenterHight;
     Vector3 m_v3CenterPos;
-    public Camera m_camera;
     Vector3[] m_v3VecA;
     Vector3[] m_v3VecB;
     Vector3[] m_v3ResultPos;
@@ -55,6 +55,7 @@ public class DetectCollider : MonoBehaviour
 
     void Awake()
     {
+        m_iPointCnt = m_v3AryPoint.Length;
         m_bToogle = false;
         m_v3CenterPos = new Vector3(0.0f, 0.0f, 0.0f);
         
@@ -63,18 +64,18 @@ public class DetectCollider : MonoBehaviour
     
     void Start()
     {
-        m_sttObjPointData = new udsPointData[POINT_DATA_COUNT];
+        m_sttObjPointData = new udsPointData[m_iPointCnt];
         DrawManager.Regist(this);
-        m_v3VecA = new Vector3[POINT_DATA_COUNT];
-        m_v3VecB = new Vector3[POINT_DATA_COUNT];
-        m_v3ResultPos = new Vector3[POINT_DATA_COUNT];
-        m_fDisAO = new float[POINT_DATA_COUNT];
-        m_fDisBO = new float[POINT_DATA_COUNT];
-        m_fDisCO = new float[POINT_DATA_COUNT];
-        m_v3EndVec = new Vector3[POINT_DATA_COUNT];
-        m_v3FinalPos = new Vector3[POINT_DATA_COUNT];
-        m_v2FinalPos = new Vector2[POINT_DATA_COUNT];
-        m_v2Normals = new Vector2[POINT_DATA_COUNT];
+        m_v3VecA = new Vector3[m_iPointCnt];
+        m_v3VecB = new Vector3[m_iPointCnt];
+        m_v3ResultPos = new Vector3[m_iPointCnt];
+        m_fDisAO = new float[m_iPointCnt];
+        m_fDisBO = new float[m_iPointCnt];
+        m_fDisCO = new float[m_iPointCnt];
+        m_v3EndVec = new Vector3[m_iPointCnt];
+        m_v3FinalPos = new Vector3[m_iPointCnt];
+        m_v2FinalPos = new Vector2[m_iPointCnt];
+        m_v2Normals = new Vector2[m_iPointCnt];
 
         CalRot();
     }
@@ -100,7 +101,7 @@ public class DetectCollider : MonoBehaviour
 
         CalRot();
 
-        for (int i = 0; i < POINT_DATA_COUNT; i++)
+        for (int i = 0; i < m_iPointCnt; i++)
         {
             m_v3VecA[i] = m_sttObjPointData[i].point - m_camera.transform.position;
             m_v3VecB[i] = m_v3CenterPos - m_camera.transform.position;
@@ -123,10 +124,8 @@ public class DetectCollider : MonoBehaviour
         float fAngle = gameObject.transform.localEulerAngles.y * (-1);
         Vector3 v3ModifyPos = new Vector3(gameObject.transform.position.x, 0.0f, gameObject.transform.position.z);
         
-        m_sttObjPointData[0] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position + new Vector3(0.0f, m_v3AryPoint[0].y, 0.0f), gameObject.transform.position + m_v3AryPoint[0], fAngle) + v3ModifyPos);
-        m_sttObjPointData[1] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position + new Vector3(0.0f, m_v3AryPoint[1].y, 0.0f), gameObject.transform.position + m_v3AryPoint[1], fAngle) + v3ModifyPos);
-        m_sttObjPointData[2] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position + new Vector3(0.0f, m_v3AryPoint[2].y, 0.0f), gameObject.transform.position + m_v3AryPoint[2], fAngle) + v3ModifyPos);
-        m_sttObjPointData[3] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position + new Vector3(0.0f, m_v3AryPoint[3].y, 0.0f), gameObject.transform.position + m_v3AryPoint[3], fAngle) + v3ModifyPos);
+        for (int i = 0; i < m_iPointCnt; i++)
+            m_sttObjPointData[i] = new udsPointData(Common.RoataeToPos2(gameObject.transform.position + new Vector3(0.0f, m_v3AryPoint[i].y, 0.0f), gameObject.transform.position + m_v3AryPoint[i], fAngle) + v3ModifyPos);
     }
 
     void UpdateNormals()
@@ -160,20 +159,20 @@ public class DetectCollider : MonoBehaviour
             return;
             
         Gizmos.color = Color.blue;
-        for (int i = 0; i < POINT_DATA_COUNT; i++)
+        for (int i = 0; i < m_iPointCnt; i++)
             Gizmos.DrawSphere(m_sttObjPointData[i].point, DRAW_SPHERE_RADIO);
 
         Gizmos.color = Color.yellow;
 
-        for (int i = 0; i < POINT_DATA_COUNT; i++)
+        for (int i = 0; i < m_iPointCnt; i++)
             Gizmos.DrawLine(m_camera.transform.position, m_v3EndVec[i] + m_camera.transform.position);
 
-        for (int i = 0; i < POINT_DATA_COUNT; i++)
+        for (int i = 0; i < m_iPointCnt; i++)
         {
             Gizmos.color = Color.green;
             Gizmos.DrawSphere(m_v3FinalPos[i], 0.05f);
 
-            if (i == POINT_DATA_COUNT - 1)
+            if (i == m_iPointCnt - 1)
                 Gizmos.DrawLine(m_v3FinalPos[i], m_v3FinalPos[0]);
             else
                 Gizmos.DrawLine(m_v3FinalPos[i], m_v3FinalPos[i+1]);

@@ -36,15 +36,18 @@ public class DrawManager : MonoBehaviour
 
     void Update()
     {
-        if (CalTrigger() == true)
+        if (m_lisData.Count >= 2)
         {
-            for (int i = 0; i < m_lisData.Count; i++)
-                m_lisData[i].TriggerEvent(false);
-        }
-        else
-        {
-            for (int i = 0; i < m_lisData.Count; i++)
-                m_lisData[i].TriggerEvent(true);
+            if (CalTrigger() == true)
+            {
+                for (int i = 0; i < m_lisData.Count; i++)
+                    m_lisData[i].TriggerEvent(false);
+            }
+            else
+            {
+                for (int i = 0; i < m_lisData.Count; i++)
+                    m_lisData[i].TriggerEvent(true);
+            }
         }
     }
 
