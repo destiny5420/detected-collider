@@ -38,3 +38,9 @@
 <p align="center"><em>圖1-3 projection of plane</em></p>
 
 <br>
+
+$$
+\frac
+{(\vec{A}\cdot\vec{B})\vec{B}}
+{\lvert\vec{B}\rvert^2}
+$$
