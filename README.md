@@ -8,7 +8,6 @@
 
 > 「玩家看到物件與物件碰撞了，但碰撞塊卻沒碰撞到」
 
-<img style="margin:auto;"  src="https://github.com/destiny5420/NintendoJoyconPatch/blob/SAT_Detected/GithubImage/image_01.png">
-
-* You can seet that `InputSetting` and `Plugin` folder appear in the project.
-
+<p align="left">
+<img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/image_01.png">
+</p>
