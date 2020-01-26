@@ -11,4 +11,4 @@
 <img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/image_01.png">
 </p>
 
-<center><em>Orthographic Camera</em></center>
+<p align="center"><em>Orthographic Camera</em></p>
