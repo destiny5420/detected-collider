@@ -122,7 +122,7 @@ void CalVectorD(int v_index)
 <br>
 
 截至目前為止，灰、紫、紅、黃四個點的向量我們都有了，因此使用Unity內建的數學函示Vector3.Distance(a, b)來獲得圖中的A、B、D長度，
-又因相似形特性<a href="https://www.codecogs.com/eqnedit.php?latex=\bar{A}&space;:&space;\bar{D}&space;=&space;\bar{C}&space;:&space;\bar{B}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\bar{A}&space;:&space;\bar{D}&space;=&space;\bar{C}&space;:&space;\bar{B}" title="\bar{A} : \bar{D} = \bar{C} : \bar{B}" /></a>，所以 <a href="https://www.codecogs.com/eqnedit.php?latex=\bar{C}&space;=&space;(\bar{A}&space;\ast&space;\bar{B})&space;\div&space;\bar{D}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\bar{C}&space;=&space;(\bar{A}&space;\ast&space;\bar{B})&space;\div&space;\bar{D}" title="\bar{C} = (\bar{A} \ast \bar{B}) \div \bar{D}" /></a>，因而求的C的長度
+又因相似形特性<a href="https://www.codecogs.com/eqnedit.php?latex=\bar{A}&space;:&space;\bar{D}&space;=&space;\bar{C}&space;:&space;\bar{B}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\bar{A}&space;:&space;\bar{D}&space;=&space;\bar{C}&space;:&space;\bar{B}" title="\bar{A} : \bar{D} = \bar{C} : \bar{B}" /></a>，所以<a href="https://www.codecogs.com/eqnedit.php?latex=\bar{C}&space;=&space;(\bar{A}&space;\ast&space;\bar{B})&space;\div&space;\bar{D}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\bar{C}&space;=&space;(\bar{A}&space;\ast&space;\bar{B})&space;\div&space;\bar{D}" title="\bar{C} = (\bar{A} \ast \bar{B}) \div \bar{D}" /></a>，因而求得C的長度
 
 ```C#
 void CalLengthVecC(int v_index)
