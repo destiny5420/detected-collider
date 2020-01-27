@@ -75,7 +75,11 @@ m_v3VecB[i] = m_v3CenterVec - m_camera.transform.position;
 
 <br>
 
-* 接下來是要想辦法取得**灰點**到**黃點**的長度，也就是 <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{120}&space;\large&space;$\lvert\vec{D}\rvert$" target="_blank"><img src="https://latex.codecogs.com/png.latex?\dpi{120}&space;\large&space;$\lvert\vec{D}\rvert$" title="\large $\lvert\vec{D}\rvert$" /></a>，在這邊必須使用內積<a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{120}&space;\large&space;$$\vec{a}&space;\cdot&space;\vec{b}$$" target="_blank"><img src="https://latex.codecogs.com/png.latex?\dpi{120}&space;\large&space;$$\vec{a}&space;\cdot&space;\vec{b}$$" title="\large $$\vec{a} \cdot \vec{b}$$" /></a>來求得。<br>
+## 取得向量D
+<p align="left">
+<img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/Artboard_5.png">
+</p><br>
+接下來是要想辦法取得**灰點**到**黃點**的向量，也就是<a href="https://www.codecogs.com/eqnedit.php?latex=$$\vec{D}$$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?$$\vec{D}$$" title="$$\vec{D}$$" /></a>，在這邊必須使用內積<a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{120}&space;\large&space;$$\vec{a}&space;\cdot&space;\vec{b}$$" target="_blank"><img src="https://latex.codecogs.com/png.latex?\dpi{120}&space;\large&space;$$\vec{a}&space;\cdot&space;\vec{b}$$" title="\large $$\vec{a} \cdot \vec{b}$$" /></a>來求得。<br>
 <a href="https://www.codecogs.com/eqnedit.php?latex=$$&space;\vec{A}&space;\cdot&space;\vec{B}&space;=&space;\left&space;|&space;\vec{A}&space;\right&space;|\left&space;|&space;\vec{B}&space;\right&space;|\cos&space;\theta&space;$$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?$$&space;\vec{A}&space;\cdot&space;\vec{B}&space;=&space;\left&space;|&space;\vec{A}&space;\right&space;|\left&space;|&space;\vec{B}&space;\right&space;|\cos&space;\theta&space;$$" title="$$ \vec{A} \cdot \vec{B} = \left | \vec{A} \right |\left | \vec{B} \right |\cos \theta $$" /></a><br><br>
 經過移動之後<br>
 <a href="https://www.codecogs.com/eqnedit.php?latex=$$\cos&space;\theta&space;=&space;\frac{&space;\vec{A}&space;\cdot&space;\vec{B}&space;}{\left&space;|&space;\vec{A}&space;\right&space;|\left&space;|&space;\vec{B}&space;\right&space;|}$$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?$$\cos&space;\theta&space;=&space;\frac{&space;\vec{A}&space;\cdot&space;\vec{B}&space;}{\left&space;|&space;\vec{A}&space;\right&space;|\left&space;|&space;\vec{B}&space;\right&space;|}$$" title="$$\cos \theta = \frac{ \vec{A} \cdot \vec{B} }{\left | \vec{A} \right |\left | \vec{B} \right |}$$" /></a><br>
