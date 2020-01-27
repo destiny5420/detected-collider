@@ -118,5 +118,14 @@ void CalVectorD(int v_index)
 <img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/Artboard_6.png">
 </p>
 <p align="center"><em>圖 1-6. 相似形特性</em></p>
-此時我們就要使用相似形的特性，因爲<a href="https://www.codecogs.com/eqnedit.php?latex=\bar{A}&space;:&space;\bar{D}&space;=&space;\bar{C}&space;:&space;\bar{B}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\bar{A}&space;:&space;\bar{D}&space;=&space;\bar{C}&space;:&space;\bar{B}" title="\bar{A} : \bar{D} = \bar{C} : \bar{B}" /></a>，所以<a href="https://www.codecogs.com/eqnedit.php?latex=\bar{C}&space;=&space;\frac{\bar{B}&space;\ast&space;\bar{A}}{&space;\bar{D}}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\bar{C}&space;=&space;\frac{\bar{B}&space;\ast&space;\bar{A}}{&space;\bar{D}}" title="\bar{C} = \frac{\bar{B} \ast \bar{A}}{ \bar{D}}" /></a>
+此時我們就要使用相似形的特性，因爲<a href="https://www.codecogs.com/eqnedit.php?latex=\bar{A}&space;:&space;\bar{D}&space;=&space;\bar{C}&space;:&space;\bar{B}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\bar{A}&space;:&space;\bar{D}&space;=&space;\bar{C}&space;:&space;\bar{B}" title="\bar{A} : \bar{D} = \bar{C} : \bar{B}" /></a>，所以<a href="https://www.codecogs.com/eqnedit.php?latex=\bar{C}&space;=&space;(\bar{B}&space;\ast&space;\bar{A})&space;\div&space;\bar{D}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\bar{C}&space;=&space;(\bar{B}&space;\ast&space;\bar{A})&space;\div&space;\bar{D}" title="\bar{C} = (\bar{B} \ast \bar{A}) \div \bar{D}" /></a>
+
+```C#
+void CalLengthVecC(int v_index)
+{
+    m_fDisD[v_index] = Vector3.Distance(m_camera.transform.position, m_v3VecD[v_index]);
+    m_fDisA[v_index] = Vector3.Distance(m_camera.transform.position, m_sttObjPointData[v_index].point);
+    m_fDisC[v_index] = (m_fDisB * m_fDisA[v_index]) / m_fDisD[v_index];
+}
+```
 
