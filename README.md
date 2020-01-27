@@ -78,7 +78,10 @@ m_v3VecB[i] = m_v3CenterVec - m_camera.transform.position;
 ## 取得向量D
 <p align="left">
 <img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/Artboard_5.png">
-</p><br>
+</p>
+<p align="center"><em>圖 1-5. 取得向量D</em></p>
+
+<br>
 接下來是要想辦法取得**灰點**到**黃點**的向量，也就是<a href="https://www.codecogs.com/eqnedit.php?latex=$$\vec{D}$$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?$$\vec{D}$$" title="$$\vec{D}$$" /></a>，在這邊必須使用內積<a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{120}&space;\large&space;$$\vec{a}&space;\cdot&space;\vec{b}$$" target="_blank"><img src="https://latex.codecogs.com/png.latex?\dpi{120}&space;\large&space;$$\vec{a}&space;\cdot&space;\vec{b}$$" title="\large $$\vec{a} \cdot \vec{b}$$" /></a>來求得。<br>
 <a href="https://www.codecogs.com/eqnedit.php?latex=$$&space;\vec{A}&space;\cdot&space;\vec{B}&space;=&space;\left&space;|&space;\vec{A}&space;\right&space;|\left&space;|&space;\vec{B}&space;\right&space;|\cos&space;\theta&space;$$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?$$&space;\vec{A}&space;\cdot&space;\vec{B}&space;=&space;\left&space;|&space;\vec{A}&space;\right&space;|\left&space;|&space;\vec{B}&space;\right&space;|\cos&space;\theta&space;$$" title="$$ \vec{A} \cdot \vec{B} = \left | \vec{A} \right |\left | \vec{B} \right |\cos \theta $$" /></a><br><br>
 經過移動之後<br>
@@ -94,4 +97,35 @@ m_v3VecB[i] = m_v3CenterVec - m_camera.transform.position;
 <a href="https://www.codecogs.com/eqnedit.php?latex=$$&space;\hat{B}&space;=&space;\frac{\vec{B}}{\left&space;|&space;\vec{B}&space;\right&space;|}&space;$$" target="_blank"><img src="https://latex.codecogs.com/png.latex?$$&space;\hat{B}&space;=&space;\frac{\vec{B}}{\left&space;|&space;\vec{B}&space;\right&space;|}&space;$$" title="$$ \hat{B} = \frac{\vec{B}}{\left | \vec{B} \right |} $$" /></a><br>
 <a href="https://www.codecogs.com/eqnedit.php?latex=$$&space;\vec{D}&space;=&space;\frac{(\vec{A}&space;\cdot&space;\vec{B})}{\left&space;|&space;\vec{B}&space;\right&space;|}&space;\ast&space;\frac{\vec{B}}{\left&space;|&space;\vec{B}&space;\right&space;|}&space;$$" target="_blank"><img src="https://latex.codecogs.com/png.latex?$$&space;\vec{D}&space;=&space;\frac{(\vec{A}&space;\cdot&space;\vec{B})}{\left&space;|&space;\vec{B}&space;\right&space;|}&space;\ast&space;\frac{\vec{B}}{\left&space;|&space;\vec{B}&space;\right&space;|}&space;$$" title="$$ \vec{D} = \frac{(\vec{A} \cdot \vec{B})}{\left | \vec{B} \right |} \ast \frac{\vec{B}}{\left | \vec{B} \right |} $$" /></a><br><br>
 因此最後獲得的公式<br>
-<a href="https://www.codecogs.com/eqnedit.php?latex=$$&space;\vec{D}&space;=&space;\frac{(\vec{A}&space;\cdot&space;\vec{B})\vec{B}}{\left&space;|&space;\vec{B}&space;\right&space;|^2}&space;$$" target="_blank"><img src="https://latex.codecogs.com/png.latex?$$&space;\vec{D}&space;=&space;\frac{(\vec{A}&space;\cdot&space;\vec{B})\vec{B}}{\left&space;|&space;\vec{B}&space;\right&space;|^2}&space;$$" title="$$ \vec{D} = \frac{(\vec{A} \cdot \vec{B})\vec{B}}{\left | \vec{B} \right |^2} $$" /></a><br>
+<a href="https://www.codecogs.com/eqnedit.php?latex=$$&space;\vec{D}&space;=&space;\frac{(\vec{A}&space;\cdot&space;\vec{B})\vec{B}}{\left&space;|&space;\vec{B}&space;\right&space;|^2}&space;$$" target="_blank"><img src="https://latex.codecogs.com/png.latex?$$&space;\vec{D}&space;=&space;\frac{(\vec{A}&space;\cdot&space;\vec{B})\vec{B}}{\left&space;|&space;\vec{B}&space;\right&space;|^2}&space;$$" title="$$ \vec{D} = \frac{(\vec{A} \cdot \vec{B})\vec{B}}{\left | \vec{B} \right |^2} $$" /></a>
+<br>
+<br>
+
+在這的最後面加上了`m_camera.transform.position`的位置，因為最後求得的向量D在計算的時候都是以(0, 0, 0)去計算，所以最終得到的向量必須再加上攝影機位置才是我們真正要的向量D
+```C#
+void CalVectorD(int v_index)
+{
+    m_v3VecA[v_index] = m_sttObjPointData[v_index].point - m_camera.transform.position;
+    m_v3VecB[v_index] = m_v3CenterVec - m_camera.transform.position;
+    float fUnitVec = (Vector3.Dot(m_v3VecA[v_index], m_v3VecB[v_index]) / Common.DisForVector3(m_v3VecB[v_index]));
+    m_v3VecD[v_index] = (m_v3VecB[v_index] * fUnitVec) + m_camera.transform.position;
+}
+```
+<br>
+
+### 相似形特性
+<p align="left">
+<img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/Artboard_6.png">
+</p>
+<p align="center"><em>圖 1-6. 相似形特性</em></p>
+此時我們就要使用相似形的特性，因爲<a href="https://www.codecogs.com/eqnedit.php?latex=\bar{A}&space;:&space;\bar{D}&space;=&space;\bar{C}&space;:&space;\bar{B}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\bar{A}&space;:&space;\bar{D}&space;=&space;\bar{C}&space;:&space;\bar{B}" title="\bar{A} : \bar{D} = \bar{C} : \bar{B}" /></a>，所以<a href="https://www.codecogs.com/eqnedit.php?latex=\bar{C}&space;=&space;(\bar{A}&space;\ast&space;\bar{B})&space;\div&space;\bar{D}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\bar{C}&space;=&space;(\bar{A}&space;\ast&space;\bar{B})&space;\div&space;\bar{D}" title="\bar{C} = (\bar{A} \ast \bar{B}) \div \bar{D}" /></a>
+
+```C#
+void CalLengthVecC(int v_index)
+{
+    m_fDisD[v_index] = Vector3.Distance(m_camera.transform.position, m_v3VecD[v_index]);
+    m_fDisA[v_index] = Vector3.Distance(m_camera.transform.position, m_sttObjPointData[v_index].point);
+    m_fDisC[v_index] = (m_fDisB * m_fDisA[v_index]) / m_fDisD[v_index];
+}
+```
+
