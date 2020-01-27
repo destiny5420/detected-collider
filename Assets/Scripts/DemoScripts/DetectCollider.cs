@@ -31,15 +31,15 @@ public class DetectCollider : MonoBehaviour
 
     [SerializeField] Camera m_camera;
     int m_iPointCnt = 8;
-    float m_fCenterLength;
     Vector3 m_v3CenterVec;
     Vector3[] m_v3VecA;
     Vector3[] m_v3VecB;
-    Vector3[] m_v3VecD;
-    float[] m_fDisA;
-    float[] m_fDisD;
-    float[] m_fDisC;
     Vector3[] m_v3VecC;
+    Vector3[] m_v3VecD;
+    float m_fLengthB;
+    float[] m_fLengthA;
+    float[] m_fLengthD;
+    float[] m_fLengthC;
 
     Color m_oriColor;
     Color m_changeColor = Color.red;
@@ -69,9 +69,9 @@ public class DetectCollider : MonoBehaviour
         m_v3VecA = new Vector3[m_iPointCnt];
         m_v3VecB = new Vector3[m_iPointCnt];
         m_v3VecD = new Vector3[m_iPointCnt];
-        m_fDisA = new float[m_iPointCnt];
-        m_fDisD = new float[m_iPointCnt];
-        m_fDisC = new float[m_iPointCnt];
+        m_fLengthA = new float[m_iPointCnt];
+        m_fLengthD = new float[m_iPointCnt];
+        m_fLengthC = new float[m_iPointCnt];
         m_v3VecC = new Vector3[m_iPointCnt];
         m_v3ResultPos = new Vector3[m_iPointCnt];
         m_v2ResultPos = new Vector2[m_iPointCnt];
@@ -97,7 +97,7 @@ public class DetectCollider : MonoBehaviour
 
     void CalVertexs()
     {
-        m_fCenterLength = Vector3.Distance(m_camera.transform.position, m_v3CenterVec);
+        m_fLengthB = Vector3.Distance(m_camera.transform.position, m_v3CenterVec);
 
         CalRot();
 
@@ -133,15 +133,15 @@ public class DetectCollider : MonoBehaviour
 
     void CalLengthVecC(int v_index)
     {
-        m_fDisD[v_index] = Vector3.Distance(m_camera.transform.position, m_v3VecD[v_index]);
-        m_fDisA[v_index] = Vector3.Distance(m_camera.transform.position, m_sttObjPointData[v_index].point);
-        m_fDisC[v_index] = (m_fCenterLength * m_fDisA[v_index]) / m_fDisD[v_index];
+        m_fLengthD[v_index] = Vector3.Distance(m_camera.transform.position, m_v3VecD[v_index]);
+        m_fLengthA[v_index] = Vector3.Distance(m_camera.transform.position, m_sttObjPointData[v_index].point);
+        m_fLengthC[v_index] = (m_fLengthB * m_fLengthA[v_index]) / m_fLengthD[v_index];
     }
 
     void CalResultPos(int v_index)
     {
         Vector3 v3UnitVecA = Vector3.Normalize(m_v3VecA[v_index]);
-        m_v3VecC[v_index] = v3UnitVecA * m_fDisC[v_index];
+        m_v3VecC[v_index] = v3UnitVecA * m_fLengthC[v_index];
         m_v3ResultPos[v_index] = m_v3VecC[v_index] + m_camera.transform.position; 
         m_v2ResultPos[v_index] = new Vector2(m_v3ResultPos[v_index].x, m_v3ResultPos[v_index].z);
     }
