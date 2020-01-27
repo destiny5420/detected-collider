@@ -119,8 +119,8 @@ void CalVectorD(int v_index)
 </p>
 <p align="center"><em>圖 1-6. 相似形特性</em></p>
 此時我們就要使用相似形的特性，來求得C的長度。
-到此步驟為止，灰、紫、紅、黃四個點的向量我們都有了，所以可以使用Unity內建的數學函示`Vector3.Distance(a, b)`來獲得圖中的A、B、D<br>
-也因相似形特性<a href="https://www.codecogs.com/eqnedit.php?latex=\bar{A}&space;:&space;\bar{D}&space;=&space;\bar{C}&space;:&space;\bar{B}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\bar{A}&space;:&space;\bar{D}&space;=&space;\bar{C}&space;:&space;\bar{B}" title="\bar{A} : \bar{D} = \bar{C} : \bar{B}" /></a>，所以 <a href="https://www.codecogs.com/eqnedit.php?latex=\bar{C}&space;=&space;(\bar{A}&space;\ast&space;\bar{B})&space;\div&space;\bar{D}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\bar{C}&space;=&space;(\bar{A}&space;\ast&space;\bar{B})&space;\div&space;\bar{D}" title="\bar{C} = (\bar{A} \ast \bar{B}) \div \bar{D}" /></a>
+到此步驟為止，灰、紫、紅、黃四個點的向量我們都有了，所以可以使用Unity內建的數學函示Vector3.Distance(a, b)來獲得圖中的A、B、D，
+因相似形特性<a href="https://www.codecogs.com/eqnedit.php?latex=\bar{A}&space;:&space;\bar{D}&space;=&space;\bar{C}&space;:&space;\bar{B}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\bar{A}&space;:&space;\bar{D}&space;=&space;\bar{C}&space;:&space;\bar{B}" title="\bar{A} : \bar{D} = \bar{C} : \bar{B}" /></a>，所以 <a href="https://www.codecogs.com/eqnedit.php?latex=\bar{C}&space;=&space;(\bar{A}&space;\ast&space;\bar{B})&space;\div&space;\bar{D}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\bar{C}&space;=&space;(\bar{A}&space;\ast&space;\bar{B})&space;\div&space;\bar{D}" title="\bar{C} = (\bar{A} \ast \bar{B}) \div \bar{D}" /></a>
 
 ```C#
 void CalLengthVecC(int v_index)
