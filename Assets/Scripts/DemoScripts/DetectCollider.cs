@@ -16,11 +16,11 @@ public class DetectCollider : MonoBehaviour
     udsPointData[] m_sttObjPointData;
     public udsPointData[] pointDatas { get { return m_sttObjPointData;} }
 
-    Vector3[] m_v3FinalPos;
-    public Vector3[] finalPoints{ get{ return m_v3FinalPos;} }
+    Vector3[] m_v3ResultPos;
+    public Vector3[] finalPoints{ get{ return m_v3ResultPos;} }
 
-    Vector2[] m_v2FinalPos;
-    public Vector2[] finalPoints2D { get{ return m_v2FinalPos;} }
+    Vector2[] m_v2ResultPos;
+    public Vector2[] finalPoints2D { get{ return m_v2ResultPos;} }
 
     Vector2[] m_v2Normals;
     public Vector2[] normals { get{return m_v2Normals;} }
@@ -35,11 +35,11 @@ public class DetectCollider : MonoBehaviour
     Vector3 m_v3CenterVec;
     Vector3[] m_v3VecA;
     Vector3[] m_v3VecB;
-    Vector3[] m_v3ResultPos;
-    float[] m_fDisAO;
-    float[] m_fDisBO;
-    float[] m_fDisCO;
-    Vector3[] m_v3EndVec;
+    Vector3[] m_v3VecD;
+    float[] m_fDisA;
+    float[] m_fDisD;
+    float[] m_fDisC;
+    Vector3[] m_v3VecC;
 
     Color m_oriColor;
     Color m_changeColor = Color.red;
@@ -68,13 +68,13 @@ public class DetectCollider : MonoBehaviour
         DrawManager.Regist(this);
         m_v3VecA = new Vector3[m_iPointCnt];
         m_v3VecB = new Vector3[m_iPointCnt];
+        m_v3VecD = new Vector3[m_iPointCnt];
+        m_fDisA = new float[m_iPointCnt];
+        m_fDisD = new float[m_iPointCnt];
+        m_fDisC = new float[m_iPointCnt];
+        m_v3VecC = new Vector3[m_iPointCnt];
         m_v3ResultPos = new Vector3[m_iPointCnt];
-        m_fDisAO = new float[m_iPointCnt];
-        m_fDisBO = new float[m_iPointCnt];
-        m_fDisCO = new float[m_iPointCnt];
-        m_v3EndVec = new Vector3[m_iPointCnt];
-        m_v3FinalPos = new Vector3[m_iPointCnt];
-        m_v2FinalPos = new Vector2[m_iPointCnt];
+        m_v2ResultPos = new Vector2[m_iPointCnt];
         m_v2Normals = new Vector2[m_iPointCnt];
 
         CalRot();
@@ -103,20 +103,9 @@ public class DetectCollider : MonoBehaviour
 
         for (int i = 0; i < m_iPointCnt; i++)
         {
-            m_v3VecA[i] = m_sttObjPointData[i].point - m_camera.transform.position;
-            m_v3VecB[i] = m_v3CenterVec - m_camera.transform.position;
-
-            float fUnitVec = (Vector3.Dot(m_v3VecA[i], m_v3VecB[i]) / Common.DisForVector3(m_v3VecB[i]));
-            m_v3ResultPos[i] = (m_v3VecB[i] * fUnitVec) + m_camera.transform.position;
-            
-            m_fDisBO[i] = Vector3.Distance(m_camera.transform.position, m_v3ResultPos[i]);
-            m_fDisAO[i] = Vector3.Distance(m_camera.transform.position, m_sttObjPointData[i].point);
-            m_fDisCO[i] = (m_fCenterLength * m_fDisAO[i]) / m_fDisBO[i];
-
-            Vector3 v3UnitVecA = Vector3.Normalize(m_v3VecA[i]);
-            m_v3EndVec[i] = v3UnitVecA * m_fDisCO[i];
-            m_v3FinalPos[i] = m_v3EndVec[i] + m_camera.transform.position; 
-            m_v2FinalPos[i] = new Vector2(m_v3FinalPos[i].x, m_v3FinalPos[i].z);
+            CalVectorD(i);
+            CalLengthVecC(i);
+            CalResultPos(i);
         }
     }
 
@@ -132,7 +121,30 @@ public class DetectCollider : MonoBehaviour
             Vector3 v3Point = Common.RoataeToPosAxisY(v3Target, v3Ref, fAxisY) + v3ModifyPos;
             m_sttObjPointData[i] = new udsPointData(v3Point);
         }
-}
+    }
+
+    void CalVectorD(int v_index)
+    {
+        m_v3VecA[v_index] = m_sttObjPointData[v_index].point - m_camera.transform.position;
+        m_v3VecB[v_index] = m_v3CenterVec - m_camera.transform.position;
+        float fUnitVec = (Vector3.Dot(m_v3VecA[v_index], m_v3VecB[v_index]) / Common.DisForVector3(m_v3VecB[v_index]));
+        m_v3VecD[v_index] = (m_v3VecB[v_index] * fUnitVec) + m_camera.transform.position;
+    }
+
+    void CalLengthVecC(int v_index)
+    {
+        m_fDisD[v_index] = Vector3.Distance(m_camera.transform.position, m_v3VecD[v_index]);
+        m_fDisA[v_index] = Vector3.Distance(m_camera.transform.position, m_sttObjPointData[v_index].point);
+        m_fDisC[v_index] = (m_fCenterLength * m_fDisA[v_index]) / m_fDisD[v_index];
+    }
+
+    void CalResultPos(int v_index)
+    {
+        Vector3 v3UnitVecA = Vector3.Normalize(m_v3VecA[v_index]);
+        m_v3VecC[v_index] = v3UnitVecA * m_fDisC[v_index];
+        m_v3ResultPos[v_index] = m_v3VecC[v_index] + m_camera.transform.position; 
+        m_v2ResultPos[v_index] = new Vector2(m_v3ResultPos[v_index].x, m_v3ResultPos[v_index].z);
+    }
 
     void UpdateNormals()
     {
@@ -140,17 +152,17 @@ public class DetectCollider : MonoBehaviour
         Vector2 v2PointA;
         Vector2 v2PointB;
 
-        for (int i = 1; i < m_v2FinalPos.Length; i++)
+        for (int i = 1; i < m_v2ResultPos.Length; i++)
         {
-            v2PointA = m_v2FinalPos[i-1];
-            v2PointB = m_v2FinalPos[i];
+            v2PointA = m_v2ResultPos[i-1];
+            v2PointB = m_v2ResultPos[i];
 
             m_v2Normals[iArrayIndex] = Common.GetNormalR(v2PointB - v2PointA);
             iArrayIndex++;
         }
 
-        v2PointA = m_v2FinalPos[m_v2FinalPos.Length - 1];
-        v2PointB = m_v2FinalPos[0];
+        v2PointA = m_v2ResultPos[m_v2ResultPos.Length - 1];
+        v2PointB = m_v2ResultPos[0];
         m_v2Normals[iArrayIndex] = Common.GetNormalR(v2PointB - v2PointA);
     }
 
@@ -171,12 +183,12 @@ public class DetectCollider : MonoBehaviour
         Gizmos.color = Color.yellow;
 
         for (int i = 0; i < m_iPointCnt; i++)
-            Gizmos.DrawLine(m_camera.transform.position, m_v3EndVec[i] + m_camera.transform.position);
+            Gizmos.DrawLine(m_camera.transform.position, m_v3VecC[i] + m_camera.transform.position);
 
         for (int i = 0; i < m_iPointCnt; i++)
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawSphere(m_v3FinalPos[i], 0.05f);
+            Gizmos.DrawSphere(m_v3ResultPos[i], 0.05f);
 
             // if (i == m_iPointCnt - 1)
             //     Gizmos.DrawLine(m_v3FinalPos[i], m_v3FinalPos[0]);
