@@ -164,7 +164,6 @@ void CalResultPos(int v_index)
 目前只針對Y軸有做此功能，如物件旋轉X或Z軸尚未支援，將會在未來有閒暇之餘補足這部分功能。<br>
 <p>
 <img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/GifImage_1.gif">
-<img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/GifImage_2.gif">
 </p>
 
 #### 2. 碰撞偵測優化
@@ -174,7 +173,7 @@ void CalResultPos(int v_index)
 
 最後因眾多了考量，專案上還是沒有使用此機制來實作物件的碰撞，不過在研究的過程中卻是十分有趣的，此篇文章希望幫助其他讀者能就此延續更多有創意的想法，製作出更多有趣的功能。
 
-</p>
+<p align="left">
+<img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/GifImage_2.gif">
 <img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/GifImage_3.gif">
-<img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/GifImage_4.gif">
 </p>
