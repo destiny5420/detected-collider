@@ -131,4 +131,50 @@ void CalLengthVecC(int v_index)
     m_fDisC[v_index] = (m_fDisB * m_fDisA[v_index]) / m_fDisD[v_index];
 }
 ```
+<br>
+<br>
 
+又因為<a href="https://www.codecogs.com/eqnedit.php?latex=\vec{C}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\vec{C}" title="\vec{C}" /></a>與<a href="https://www.codecogs.com/eqnedit.php?latex=\vec{A}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\vec{A}" title="\vec{A}" /></a>屬於同樣的方向，所以<a href="https://www.codecogs.com/eqnedit.php?latex=\vec{C}&space;=&space;\left&space;|&space;\vec{c}&space;\right&space;|&space;\hat{A}" target="_blank"><img src="https://latex.codecogs.com/png.latex?\vec{C}&space;=&space;\left&space;|&space;\vec{c}&space;\right&space;|&space;\hat{A}" title="\vec{C} = \left | \vec{c} \right | \hat{A}" /></a>
+
+```C#
+void CalResultPos(int v_index)
+{
+    Vector3 v3UnitVecA = Vector3.Normalize(m_v3VecA[v_index]);
+    m_v3VecC[v_index] = v3UnitVecA * m_fLengthC[v_index];
+    m_v3ResultPos[v_index] = m_v3VecC[v_index] + m_camera.transform.position; 
+    m_v2ResultPos[v_index] = new Vector2(m_v3ResultPos[v_index].x, m_v3ResultPos[v_index].z);
+}
+```
+最後一樣要將 ***向量加上camera的位置*** 才是我們最後要的藍點位置喔!
+> 因最後只用兩軸來計算SAT，所以最後從Vec3轉換為Vec2<br>
+
+<br>
+<br>
+
+到目前為止求得的四個點再依照SAT檢測就可以得到碰撞結果了。<br>
+不過因為網路上已有作者針對SAT檢測有更詳細的文章解釋，所以可以[參考](http://davidhsu666.com/archives/gamecollisiondetection/)此作者的文章
+
+<br>
+
+## 總結
+至目前為止已經解決了一開始想要做的部分，但還有些想到的問題尚未解決<br>
+<br>
+
+#### 1. 針對物件的旋轉，映射在虛擬平面上的點做相對應的旋轉
+目前只針對Y軸有做此功能，如物件旋轉X或Z軸尚未支援，將會在未來有閒暇之餘補足這部分功能。<br>
+<p>
+<img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/GifImage_1.gif">
+<img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/GifImage_2.gif">
+</p>
+
+#### 2. 碰撞偵測優化
+目前的實驗Project只有兩個物件，如果將物件增加至千個，效能上肯定有非常大的落差，關於這點在SAT的作者有用了四叉樹(QuadTree)來做檢測優化，有興趣的讀者可以參考這篇[文章](http://davidhsu666.com/archives/quadtree_in_2d/)<br>
+<br>
+<br>
+
+最後因眾多了考量，專案上還是沒有使用此機制來實作物件的碰撞，不過在研究的過程中卻是十分有趣的，此篇文章希望幫助其他讀者能就此延續更多有創意的想法，製作出更多有趣的功能。
+
+</p>
+<img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/GifImage_3.gif">
+<img style="margin:auto;"  src="https://github.com/destiny5420/DetectedCollider/blob/SAT_Detected/GithubImage/GifImage_4.gif">
+</p>
